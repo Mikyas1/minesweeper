@@ -1,17 +1,55 @@
-# This is a sample Python script.
-
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    x = 200
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+from tkinter import *
+from cell import Cell
+import settings
+import utils
 
 
-# Press the green button in the gutter to run the script.
+def create_app():
+    root = Tk()
+    root.configure(background="black")
+    root.geometry(f"{settings.WIDTH}x{settings.HEIGHT}")
+    root.title("Minesweeper Game")
+    root.resizable(False, False)
+
+    top_frame = Frame(
+        root,
+        bg="black",
+        width=settings.WIDTH,
+        height=utils.height_prct(percentage=25),
+    )
+    top_frame.place(x=0, y=0)
+
+    left_frame = Frame(
+        root,
+        bg='black',
+        width=utils.width_prct(percentage=25),
+        height=utils.height_prct(percentage=75)
+    )
+    left_frame.place(x=0, y=utils.height_prct(percentage=25))
+
+    center_frame = Frame(
+        root,
+        bg="black",
+        width=utils.width_prct(percentage=75),
+        height=utils.height_prct(percentage=75),
+    )
+    center_frame.place(
+        x=utils.width_prct(percentage=25),
+        y=utils.height_prct(percentage=25),
+    )
+
+    for row in range(settings.GRID_SIZE):
+        for column in range(settings.GRID_SIZE):
+            c = Cell(
+                location=center_frame,
+                column=column,
+                row=row,
+            )
+
+    Cell.randomize_mines()
+    Cell.create_cell_count_label(left_frame)
+    root.mainloop()
+
+
 if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    create_app()
